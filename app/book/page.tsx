@@ -5,7 +5,7 @@ import { Lock } from "lucide-react";
 import { BookingCalendar } from "@/components/BookingCalendar";
 import { RightColumnPlaceholder } from "@/components/RightColumnPlaceholder";
 import { WindowSelector } from "@/components/WindowSelector";
-import { BlockSelector } from "@/components/BlockSelector";
+
 import { ConfirmationModal } from "@/components/ConfirmationModal";
 
 export default function BookPage() {
@@ -54,7 +54,7 @@ export default function BookPage() {
 
         {/* StepMeta */}
         <div className="w-full border-b border-[#ebebeb] bg-[#f9f9f9]" style={{ padding: '14px 24px' }}>
-          <p className="text-neutral-900 font-medium" style={{ fontSize: 22 }}>Select a time window</p>
+          <p className="text-neutral-900 font-medium" style={{ fontSize: 22 }}>When works best for you?</p>
           <p className="text-neutral-500" style={{ fontSize: 13, marginTop: 2 }}>Plumbing · Routine</p>
         </div>
 
@@ -66,18 +66,13 @@ export default function BookPage() {
           {selectedDate === null ? (
             <RightColumnPlaceholder />
           ) : (
-            <div className="flex-1 p-6 bg-neutral-50">
+            <div className="flex-1 p-6 bg-white flex flex-col h-full">
               <WindowSelector
                 selectedWindow={selectedWindow}
                 onSelectWindow={handleSelectWindow}
+                selectedBlock={selectedBlock}
+                onSelectBlock={setSelectedBlock}
               />
-              {selectedWindow !== null && (
-                <BlockSelector
-                  selectedWindow={selectedWindow}
-                  selectedBlock={selectedBlock}
-                  onSelectBlock={setSelectedBlock}
-                />
-              )}
             </div>
           )}
         </div>
@@ -98,7 +93,7 @@ export default function BookPage() {
             <button
               disabled={!canReview}
               onClick={() => canReview && setShowModal(true)}
-              className="font-medium rounded-full transition-colors"
+              className="font-medium rounded-xl transition-colors"
               style={{
                 fontSize: 13,
                 padding: '8px 20px',
@@ -113,7 +108,16 @@ export default function BookPage() {
         </div>
 
         {/* Confirmation modal — overlays the portal card */}
-        <ConfirmationModal isOpen={showModal} onClose={() => setShowModal(false)} />
+        <ConfirmationModal
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+          onReset={() => {
+            setSelectedDate(null);
+            setSelectedWindow(null);
+            setSelectedBlock(null);
+            setShowModal(false);
+          }}
+        />
 
       </div>
     </div>

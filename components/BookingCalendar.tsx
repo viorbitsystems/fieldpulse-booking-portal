@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import clsx from "clsx";
 
 const DOW_LABELS = ["S", "M", "T", "W", "T", "F", "S"];
@@ -8,8 +9,7 @@ const MONTH_NAMES = [
   "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December",
 ];
-const UNAVAILABLE_DOW = 5; // Fridays are unavailable
-const TODAY_MONTH = 4;     // May (0-indexed)
+const TODAY_MONTH = 4; // May (0-indexed)
 const TODAY_DAY = 27;
 const YEAR = 2026;
 
@@ -20,10 +20,6 @@ function buildGrid(year: number, month: number): (number | null)[] {
   for (let d = 1; d <= daysInMonth; d++) cells.push(d);
   while (cells.length % 7 !== 0) cells.push(null);
   return cells;
-}
-
-function isUnavailable(year: number, month: number, day: number): boolean {
-  return new Date(year, month, day).getDay() === UNAVAILABLE_DOW;
 }
 
 interface BookingCalendarProps {
@@ -49,17 +45,17 @@ export function BookingCalendar({ selectedDate, onSelectDate }: BookingCalendarP
         <div className="flex items-center gap-2">
           <button
             onClick={prev}
-            className="flex items-center justify-center bg-neutral-100 border border-neutral-200 rounded-lg text-neutral-500"
+            className="flex items-center justify-center bg-neutral-100 hover:bg-[#e0e0e0] border border-neutral-200 rounded-lg text-neutral-500 transition-colors duration-150"
             style={{ width: 30, height: 30 }}
           >
-            ‹
+            <ChevronLeft size={14} />
           </button>
           <button
             onClick={next}
-            className="flex items-center justify-center bg-neutral-100 border border-neutral-200 rounded-lg text-neutral-500"
+            className="flex items-center justify-center bg-neutral-100 hover:bg-[#e0e0e0] border border-neutral-200 rounded-lg text-neutral-500 transition-colors duration-150"
             style={{ width: 30, height: 30 }}
           >
-            ›
+            <ChevronRight size={14} />
           </button>
         </div>
       </div>
@@ -82,20 +78,18 @@ export function BookingCalendar({ selectedDate, onSelectDate }: BookingCalendarP
         {grid.map((day, i) => {
           if (day === null) return <div key={i} />;
 
-          const unavailable = isUnavailable(YEAR, displayMonth, day);
           const today = displayMonth === TODAY_MONTH && day === TODAY_DAY;
           const selected = day === selectedDate;
 
           return (
             <div key={i} className="flex items-center justify-center">
               <span
-                onClick={() => !unavailable && onSelectDate(day)}
+                onClick={() => onSelectDate(day)}
                 className={clsx(
                   "flex items-center justify-center p-[7px] min-w-[30px] text-center leading-none text-[14px]",
-                  selected && "bg-brand-navy text-white font-semibold rounded-full",
-                  !selected && unavailable && "text-neutral-300 cursor-default",
-                  !selected && !unavailable && today && "border border-[#1a2e4a] text-neutral-900 rounded-[6px] cursor-pointer",
-                  !selected && !unavailable && !today && "text-neutral-900 rounded-[6px] cursor-pointer hover:bg-neutral-100"
+                  selected && "bg-brand-navy text-white font-semibold rounded-[6px]",
+                  !selected && today && "border border-[#1a2e4a] text-neutral-900 rounded-[6px] cursor-pointer",
+                  !selected && !today && "text-neutral-900 rounded-[6px] cursor-pointer hover:bg-neutral-100"
                 )}
               >
                 {day}
