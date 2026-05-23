@@ -1,21 +1,30 @@
 "use client";
 
+import { useState } from "react";
 import clsx from "clsx";
 
 const DOW_LABELS = ["S", "M", "T", "W", "T", "F", "S"];
-const UNAVAILABLE = new Set([5, 12, 19, 26]);
-const TODAY = 2;
-const START_DOW = 1; // June 1, 2026 = Monday
-const DAYS_IN_MONTH = 30;
+const MONTH_NAMES = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
+const UNAVAILABLE_DOW = 5; // Fridays are unavailable
+const TODAY_MONTH = 4;     // May (0-indexed)
+const TODAY_DAY = 27;
+const YEAR = 2026;
 
-function buildGrid(): (number | null)[] {
-  const cells: (number | null)[] = new Array(START_DOW).fill(null);
-  for (let d = 1; d <= DAYS_IN_MONTH; d++) cells.push(d);
+function buildGrid(year: number, month: number): (number | null)[] {
+  const firstDow = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const cells: (number | null)[] = new Array(firstDow).fill(null);
+  for (let d = 1; d <= daysInMonth; d++) cells.push(d);
   while (cells.length % 7 !== 0) cells.push(null);
   return cells;
 }
 
-const grid = buildGrid();
+function isUnavailable(year: number, month: number, day: number): boolean {
+  return new Date(year, month, day).getDay() === UNAVAILABLE_DOW;
+}
 
 interface BookingCalendarProps {
   selectedDate: number | null;
@@ -23,21 +32,30 @@ interface BookingCalendarProps {
 }
 
 export function BookingCalendar({ selectedDate, onSelectDate }: BookingCalendarProps) {
+  const [displayMonth, setDisplayMonth] = useState(4); // May
+
+  const grid = buildGrid(YEAR, displayMonth);
+
+  function prev() { setDisplayMonth((m) => (m === 0 ? 11 : m - 1)); }
+  function next() { setDisplayMonth((m) => (m === 11 ? 0 : m + 1)); }
+
   return (
     <div className="p-6">
       {/* Month header */}
       <div className="flex items-center justify-between mb-5">
         <span className="text-neutral-900 font-medium" style={{ fontSize: 17 }}>
-          June 2026
+          {MONTH_NAMES[displayMonth]} {YEAR}
         </span>
         <div className="flex items-center gap-2">
           <button
+            onClick={prev}
             className="flex items-center justify-center bg-neutral-100 border border-neutral-200 rounded-lg text-neutral-500"
             style={{ width: 30, height: 30 }}
           >
             ‹
           </button>
           <button
+            onClick={next}
             className="flex items-center justify-center bg-neutral-100 border border-neutral-200 rounded-lg text-neutral-500"
             style={{ width: 30, height: 30 }}
           >
@@ -64,8 +82,8 @@ export function BookingCalendar({ selectedDate, onSelectDate }: BookingCalendarP
         {grid.map((day, i) => {
           if (day === null) return <div key={i} />;
 
-          const unavailable = UNAVAILABLE.has(day);
-          const today = day === TODAY;
+          const unavailable = isUnavailable(YEAR, displayMonth, day);
+          const today = displayMonth === TODAY_MONTH && day === TODAY_DAY;
           const selected = day === selectedDate;
 
           return (
@@ -73,11 +91,10 @@ export function BookingCalendar({ selectedDate, onSelectDate }: BookingCalendarP
               <span
                 onClick={() => !unavailable && onSelectDate(day)}
                 className={clsx(
-                  "flex items-center justify-center p-[7px] min-w-[30px] text-center leading-none",
-                  { "text-[14px]": true },
+                  "flex items-center justify-center p-[7px] min-w-[30px] text-center leading-none text-[14px]",
                   selected && "bg-brand-navy text-white font-semibold rounded-full",
                   !selected && unavailable && "text-neutral-300 cursor-default",
-                  !selected && !unavailable && today && "bg-neutral-100 font-medium text-neutral-900 rounded-[6px] cursor-pointer",
+                  !selected && !unavailable && today && "border border-[#1a2e4a] text-neutral-900 rounded-[6px] cursor-pointer",
                   !selected && !unavailable && !today && "text-neutral-900 rounded-[6px] cursor-pointer hover:bg-neutral-100"
                 )}
               >

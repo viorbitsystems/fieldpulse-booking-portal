@@ -43,7 +43,7 @@ export function ConfirmationModal({ isOpen, onClose }: ConfirmationModalProps) {
           </div>
           {/* Right column */}
           <div style={{ paddingLeft: 20 }}>
-            <SummaryRow label="Preferred time" value="Tue, June 9 · 8:00 – 10:00 am" showEdit />
+            <SummaryRow label="Preferred time" value="Tue, June 9 · 8 – 10 am" showEdit />
             <SummaryRow label="Contact"        value="Tyler · text preferred"         showEdit />
             <SummaryRow label="Confirmation"   value="Within 2 hours by text"         isLast />
           </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Lock } from "lucide-react";
 import { BookingCalendar } from "@/components/BookingCalendar";
 import { RightColumnPlaceholder } from "@/components/RightColumnPlaceholder";
 import { WindowSelector } from "@/components/WindowSelector";
@@ -53,7 +54,7 @@ export default function BookPage() {
 
         {/* StepMeta */}
         <div className="w-full border-b border-[#ebebeb] bg-[#f9f9f9]" style={{ padding: '14px 24px' }}>
-          <p className="text-neutral-900 font-medium" style={{ fontSize: 22 }}>Pick a time</p>
+          <p className="text-neutral-900 font-medium" style={{ fontSize: 22 }}>Select a time window</p>
           <p className="text-neutral-500" style={{ fontSize: 13, marginTop: 2 }}>Plumbing · Routine</p>
         </div>
 
@@ -72,6 +73,7 @@ export default function BookPage() {
               />
               {selectedWindow !== null && (
                 <BlockSelector
+                  selectedWindow={selectedWindow}
                   selectedBlock={selectedBlock}
                   onSelectBlock={setSelectedBlock}
                 />
@@ -85,7 +87,8 @@ export default function BookPage() {
           className="w-full border-t border-[#ebebeb] bg-white flex items-center justify-between"
           style={{ padding: '12px 24px' }}
         >
-          <span className="text-neutral-400" style={{ fontSize: 11 }}>
+          <span className="flex items-center text-neutral-400" style={{ fontSize: 11, gap: 5 }}>
+            <Lock size={12} color="#bbb" />
             Verified FieldPulse Business
           </span>
           <div className="flex items-center gap-4">
