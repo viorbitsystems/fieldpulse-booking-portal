@@ -45,10 +45,12 @@ export function ConfirmationModal({ isOpen, onClose, onReset }: ConfirmationModa
     <div
       className="absolute inset-0 z-10 flex items-center justify-center"
       style={{ background: "rgba(15,20,30,0.45)", backdropFilter: "blur(3px)" }}
+      onClick={onClose}
     >
       <div
         className="bg-white border border-[#e0e0e0] rounded-2xl overflow-hidden"
         style={{ width: 520 }}
+        onClick={(e) => e.stopPropagation()}
       >
         <div
           style={{

@@ -12,6 +12,7 @@ const MONTH_NAMES = [
 const TODAY_MONTH = 4; // May (0-indexed)
 const TODAY_DAY = 27;
 const YEAR = 2026;
+const CUTOFF = new Date(2026, 4, 26); // May 26, 2026 — dates on or before are past
 
 function buildGrid(year: number, month: number): (number | null)[] {
   const firstDow = new Date(year, month, 1).getDay();
@@ -78,18 +79,20 @@ export function BookingCalendar({ selectedDate, onSelectDate }: BookingCalendarP
         {grid.map((day, i) => {
           if (day === null) return <div key={i} />;
 
+          const past = new Date(YEAR, displayMonth, day) <= CUTOFF;
           const today = displayMonth === TODAY_MONTH && day === TODAY_DAY;
-          const selected = day === selectedDate;
+          const selected = !past && day === selectedDate;
 
           return (
             <div key={i} className="flex items-center justify-center">
               <span
-                onClick={() => onSelectDate(day)}
+                onClick={() => !past && onSelectDate(day)}
                 className={clsx(
                   "flex items-center justify-center p-[7px] min-w-[30px] text-center leading-none text-[14px]",
-                  selected && "bg-brand-navy text-white font-semibold rounded-[6px]",
-                  !selected && today && "border border-[#1a2e4a] text-neutral-900 rounded-[6px] cursor-pointer",
-                  !selected && !today && "text-neutral-900 rounded-[6px] cursor-pointer hover:bg-neutral-100"
+                  past && "text-neutral-300 cursor-default",
+                  !past && selected && "bg-brand-navy text-white font-semibold rounded-[6px]",
+                  !past && !selected && today && "border border-[#1a2e4a] text-neutral-900 rounded-[6px] cursor-pointer",
+                  !past && !selected && !today && "text-neutral-900 rounded-[6px] cursor-pointer hover:bg-neutral-100"
                 )}
               >
                 {day}

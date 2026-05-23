@@ -87,19 +87,6 @@ export function WindowSelector({
 
       </div>
 
-      {/* SLA note — pinned to bottom */}
-      <div
-        className="bg-[#f4fdf7] text-neutral-600 rounded-lg mt-auto pb-4"
-        style={{
-          border: "1px solid #16a34a",
-          padding: "8px 12px",
-          fontSize: 12,
-          marginTop: 16,
-        }}
-      >
-        We'll confirm your appointment within 2 hours
-      </div>
-
     </div>
   );
 }
