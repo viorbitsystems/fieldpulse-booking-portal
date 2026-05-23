@@ -2,7 +2,7 @@ import { Calendar } from "lucide-react";
 
 export function RightColumnPlaceholder() {
   return (
-    <div className="flex-1 flex items-center justify-center p-6 bg-neutral-50">
+    <div className="flex-1 flex items-center justify-center p-6 bg-white">
       <div className="flex flex-col items-center gap-3">
         <Calendar size={32} className="text-neutral-300" />
         <p

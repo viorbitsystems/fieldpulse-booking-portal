@@ -114,7 +114,7 @@ function ReviewContent({
       <div className="flex flex-col items-center" style={{ padding: "16px 24px 22px", gap: 10 }}>
         <button
           onClick={onConfirm}
-          className="w-full bg-brand-navy text-white font-medium rounded-[10px]"
+          className="w-full bg-brand-navy text-white font-medium rounded-[10px] transition-colors hover:bg-[#243d61] active:bg-[#142236]"
           style={{ fontSize: 14, padding: 12 }}
         >
           Request Appointment

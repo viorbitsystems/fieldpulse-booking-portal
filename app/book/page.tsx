@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Lock } from "lucide-react";
+import { PortalHeader } from "@/components/PortalHeader";
 import { BookingCalendar } from "@/components/BookingCalendar";
 import { RightColumnPlaceholder } from "@/components/RightColumnPlaceholder";
 import { WindowSelector } from "@/components/WindowSelector";
@@ -32,25 +33,11 @@ export default function BookPage() {
       <div className="relative w-full max-w-[780px] bg-white border border-[#e0e0e0] rounded-2xl overflow-hidden">
 
         {/* PortalHeader */}
-        <div className="h-16 w-full border-b border-[#ebebeb] bg-white flex items-center justify-between" style={{ padding: '14px 24px' }}>
-          <div className="flex items-center gap-2">
-            <span className="text-brand-coral font-bold tracking-[0.08em]" style={{ fontSize: 13 }}>KNOX</span>
-            <div className="w-px bg-[#e0e0e0]" style={{ height: 16 }} />
-            <span className="text-neutral-900 font-medium" style={{ fontSize: 14 }}>Knox Plumbing</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1">
-              {[1, 2, 3, 4, 5, 6, 7].map((s) => (
-                <div
-                  key={s}
-                  className={s <= 4 ? 'bg-brand-navy' : s === 5 ? 'bg-brand-green' : 'bg-neutral-200'}
-                  style={{ width: 28, height: 3, borderRadius: 2 }}
-                />
-              ))}
-            </div>
-            <span className="text-neutral-500" style={{ fontSize: 11 }}>step 5 of 7</span>
-          </div>
-        </div>
+        <PortalHeader
+          selectedDate={selectedDate}
+          selectedWindow={selectedWindow}
+          selectedBlock={selectedBlock}
+        />
 
         {/* StepMeta */}
         <div className="w-full border-b border-[#ebebeb] bg-[#f9f9f9]" style={{ padding: '14px 24px' }}>
@@ -93,14 +80,12 @@ export default function BookPage() {
             <button
               disabled={!canReview}
               onClick={() => canReview && setShowModal(true)}
-              className="font-medium rounded-xl transition-colors"
-              style={{
-                fontSize: 13,
-                padding: '8px 20px',
-                ...(canReview
-                  ? { background: '#1a2e4a', color: '#fff', cursor: 'pointer' }
-                  : { background: '#ebebeb', color: '#bbb', cursor: 'not-allowed' }),
-              }}
+              className={
+                canReview
+                  ? "font-medium rounded-xl transition-colors bg-brand-navy text-white cursor-pointer hover:bg-[#243d61] active:bg-[#142236]"
+                  : "font-medium rounded-xl transition-colors bg-[#ebebeb] text-[#bbb] cursor-not-allowed"
+              }
+              style={{ fontSize: 13, padding: '8px 20px' }}
             >
               Review &rsaquo;
             </button>
