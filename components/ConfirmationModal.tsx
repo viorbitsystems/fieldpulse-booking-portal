@@ -132,11 +132,23 @@ function ReviewContent({
 }
 
 function ConfirmedContent() {
+  const [seconds, setSeconds] = useState(8);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSeconds((s) => Math.max(0, s - 1));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div
-      className="flex flex-col items-center"
+      className="relative flex flex-col items-center"
       style={{ padding: "40px 32px" }}
     >
+      <span className="absolute top-4 right-4 text-sm text-neutral-400">
+        Closes in {seconds}s
+      </span>
       {/* Checkmark circle */}
       <div
         className="flex items-center justify-center"
