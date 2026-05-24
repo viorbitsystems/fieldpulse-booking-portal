@@ -107,7 +107,7 @@ function ReviewContent({
         className="text-neutral-600 bg-[#f4fdf7] rounded-lg border border-[#16a34a]"
         style={{ margin: "14px 24px 0", padding: "8px 12px", fontSize: 12 }}
       >
-        No card required today. Keep an eye out for a text or email.
+        No card required today.
       </div>
 
       {/* Footer */}
